@@ -1,0 +1,10 @@
+John Doe;ABC Company;123 Main St;555-1234;
+Jane Smith;XYZ Corporation;456 Oak St;555-5678;
+Bob Johnson;123 Industries;789 Pine St;555-9876;
+Alice Brown;456 Enterprises;101 Cedar St;555-4321;
+Charlie Davis;789 Ltd;202 Elm St;555-8765;
+Eva White;ABC Company;303 Birch St;555-3456;
+David Black;XYZ Corporation;404 Maple St;555-6543;
+Mark Wilson;789 Ltd;505 Pineapple St;555-1122;
+Sarah Turner;456 Enterprises;606 Cherry St;555-3344;
+Michael Adams;123 Industries;707 Orange St;555-5566;

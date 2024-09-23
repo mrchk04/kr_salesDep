@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="280.0" prefWidth="380.0" styleClass="background" stylesheets="@../Theme.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.salesDep.controllers.AverageAmountController">
+   <children>
+      <Label layoutX="75.0" layoutY="100.0" text="Середня кількість продуктів у контракті:" AnchorPane.leftAnchor="45.0" AnchorPane.rightAnchor="45.0" AnchorPane.topAnchor="100.0" />
+      <Label fx:id="labelAverageAmount" alignment="CENTER" layoutX="176.0" layoutY="131.0" prefHeight="18.0" text="Label" textAlignment="CENTER" AnchorPane.leftAnchor="45.0" AnchorPane.rightAnchor="45.0" />
+      <Button fx:id="buttonOk" layoutX="161.0" layoutY="222.0" mnemonicParsing="false" onAction="#handleButtonOk" text="Ок" AnchorPane.bottomAnchor="25.0" />
+   </children>
+</AnchorPane>

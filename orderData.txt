@@ -1,0 +1,10 @@
+C1;30;Laptop,10,1200.0;Phone,5,800.0;Printer,3,150.0;
+C2;232;Tablet,8,450.0;Headphones,12,120.0;Speaker,6,200.0;
+C3;12;Camera,15,1000.0;Smartwatch,9,300.0;Drone,5,700.0;
+C4;10;Laptop,7,1100.0;Phone,4,750.0;Printer,6,130.0;
+C5;17;Tablet,12,400.0;Headphones,8,100.0;Speaker,10,180.0;
+C6;19;Camera,18,950.0;Smartwatch,6,270.0;Drone,8,650.0;
+C7;54;Laptop,9,1150.0;Phone,3,780.0;Printer,4,140.0;
+C8;24;Tablet,10,430.0;Headphones,7,110.0;Speaker,9,190.0;
+C9;12;Camera,12,980.0;Smartwatch,10,320.0;Drone,7,720.0;
+C10;11;Laptop,8,1180.0;Phone,6,820.0;Printer,5,160.0;
