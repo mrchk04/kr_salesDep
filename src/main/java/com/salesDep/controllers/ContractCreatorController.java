@@ -1,21 +1,15 @@
 package com.salesDep.controllers;
 
+import com.salesDep.FileManager;
+import com.salesDep.InputValidator;
 import com.salesDep.MainApp;
 import com.salesDep.model.Contract;
-import com.salesDep.model.Customer;
 import com.salesDep.model.Product;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
-import com.salesDep.FileManager;
-
-import java.io.IOException;
-import java.util.List;
 
 
 public class ContractCreatorController extends MainApp {
@@ -142,33 +136,23 @@ public class ContractCreatorController extends MainApp {
     private boolean isInputValid() {
         String errorMessage = "";
 
-        if (fieldContractID.getText() == null || fieldContractID.getText().trim().isEmpty()) {
-            errorMessage += "Не коректний ID контракту!\n";
-        }
-
-        if (fieldContractTerm.getText() == null || fieldContractTerm.getText().trim().isEmpty()) {
-            errorMessage += "Не коректний термін поставки!\n";
-        } else {
-            try {
-                int term = Integer.parseInt(fieldContractTerm.getText());
-                if (term <= 0) {
-                    errorMessage += "Термін повинен мати позитивне число!\n";
-                }
-            } catch (NumberFormatException e) {
-                errorMessage += "Не коректний термін поставки! Введіть коректне значення.\n";
-            }
-        }
+        errorMessage += InputValidator.validateNotEmpty(fieldContractID.getText(), "ID контракту");
+        errorMessage += InputValidator.validatePositiveInteger(fieldContractTerm.getText(), "Термін контракту");
 
         if (errorMessage.isEmpty()) {
             return true;
         } else {
-            // Display the error message
+            // Виведення повідомлення про помилку
             Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Не коректні поля");
-            alert.setHeaderText("Будь ласка, введіть коректні поля.");
+            alert.initOwner(dialogStage);  // dialogStage використовується для роботи з діалоговим вікном
+            alert.setTitle("Некоректні поля");
+            alert.setHeaderText("Будь ласка, виправте помилки у введених даних.");
             alert.setContentText(errorMessage);
+
             alert.showAndWait();
+
             return false;
         }
     }
+
 }

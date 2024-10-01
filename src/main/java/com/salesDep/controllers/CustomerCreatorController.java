@@ -1,9 +1,9 @@
 package com.salesDep.controllers;
 
+import com.salesDep.InputValidator;
 import com.salesDep.model.Customer;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
@@ -71,26 +71,18 @@ public class CustomerCreatorController {
     private boolean isInputValid() {
         String errorMessage = "";
 
-        if (fieldFullName.getText() == null || fieldFullName.getText().isEmpty()) {
-            errorMessage += "Не коректне ім'я!\n";
-        }
-        if (fieldNameOfCompany.getText() == null || fieldNameOfCompany.getText().isEmpty()) {
-            errorMessage += "Не коректна назва компанії!\n";
-        }
-        if (fieldAddress.getText() == null || fieldAddress.getText().isEmpty()) {
-            errorMessage += "Не коректний адрес!\n";
-        }
-
-        if (fieldPhoneNum.getText() == null || fieldPhoneNum.getText().isEmpty()) {
-            errorMessage += "Не коректний номер телефону!\n";
-        }
+        // Перевіряємо, чи поля не пусті
+        errorMessage += InputValidator.validateNotEmpty(fieldFullName.getText(), "Повне ім'я");
+        errorMessage += InputValidator.validateNotEmpty(fieldNameOfCompany.getText(), "Назва компанії");
+        errorMessage += InputValidator.validateNotEmpty(fieldPhoneNum.getText(), "Номер телефону");
+        errorMessage += InputValidator.validateNotEmpty(fieldAddress.getText(), "Адреса");
 
         if (errorMessage.isEmpty()) {
             return true;
         } else {
-            // Показуємо повідомлення про помилку.
-            Alert alert = new Alert(AlertType.ERROR);
-            alert.initOwner(dialogStage);
+            // Показуємо повідомлення про помилку
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.initOwner(dialogStage);  // Використовуємо dialogStage, а не dialogStage1
             alert.setTitle("Не коректні поля");
             alert.setHeaderText("Будь ласка, введіть коректні поля.");
             alert.setContentText(errorMessage);
@@ -101,3 +93,4 @@ public class CustomerCreatorController {
         }
     }
 }
+

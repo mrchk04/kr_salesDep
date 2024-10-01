@@ -7,6 +7,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import com.salesDep.InputValidator;
 
 public class ProductCreatorController {
     public TextField fieldType;
@@ -66,33 +67,9 @@ public class ProductCreatorController {
     private boolean isInputValid() {
         String errorMessage = "";
 
-        if (fieldType.getText() == null || fieldType.getText().isEmpty()) {
-            errorMessage += "Не коректний тип продукту!\n";
-        }
-        if (fieldQuantity.getText() == null || fieldQuantity.getText().isEmpty()) {
-            errorMessage += "Не коректна кількість!\n";
-        } else {
-            try {
-                int qntt = Integer.parseInt(fieldQuantity.getText());
-                if (qntt <= 0) {
-                    errorMessage += "Кількість повина мати позитивне число!\n";
-                }
-            } catch (NumberFormatException e) {
-                errorMessage += "Не коректна кількість! Введіть коректне значення.\n";
-            }
-        }
-        if (fieldCost.getText() == null || fieldCost.getText().isEmpty()) {
-            errorMessage += "Не коректна вартість!\n";
-        }else {
-            try {
-                int cost = Integer.parseInt(fieldQuantity.getText());
-                if (cost <= 0) {
-                    errorMessage += "Вартість повина мати позитивне число!\n";
-                }
-            } catch (NumberFormatException e) {
-                errorMessage += "Не коректна вартість! Введіть коректне значення.\n";
-            }
-        }
+        errorMessage += InputValidator.validateNotEmpty(fieldType.getText(), "Тип продукту");
+        errorMessage += InputValidator.validatePositiveInteger(fieldQuantity.getText(), "Кількість");
+        errorMessage += InputValidator.validatePositiveDouble(fieldCost.getText(), "Вартість");
 
         if (errorMessage.isEmpty()) {
             return true;
