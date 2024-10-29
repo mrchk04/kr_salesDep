@@ -2,12 +2,12 @@ package com.salesDep.controllers;
 
 import com.salesDep.MainApp;
 import com.salesDep.model.Product;
+import com.salesDep.services.ProductService;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import com.salesDep.InputValidator;
 
 public class ProductCreatorController {
     public TextField fieldType;
@@ -20,6 +20,7 @@ public class ProductCreatorController {
     private Product product;
     private boolean okClicked = false;
     private MainApp mainApp;
+    private ProductService productService = new ProductService();
 
 
     @FXML
@@ -65,25 +66,19 @@ public class ProductCreatorController {
     }
 
     private boolean isInputValid() {
-        String errorMessage = "";
-
-        errorMessage += InputValidator.validateNotEmpty(fieldType.getText(), "Тип продукту");
-        errorMessage += InputValidator.validatePositiveInteger(fieldQuantity.getText(), "Кількість");
-        errorMessage += InputValidator.validatePositiveDouble(fieldCost.getText(), "Вартість");
-
-        if (errorMessage.isEmpty()) {
-            return true;
-        } else {
-            // Показуємо повідомлення про помилку.
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.initOwner(dialogStage1);
-            alert.setTitle("Не коректні поля");
-            alert.setHeaderText("Будь ласка, введіть коректні поля.");
-            alert.setContentText(errorMessage);
-
-            alert.showAndWait();
-
+        if (!productService.validateProductFields(fieldType.getText(), fieldQuantity.getText(), fieldCost.getText())) {
+            showError("Некоректні дані для продукту");
             return false;
         }
+        return true;
+    }
+
+    private void showError(String message) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.initOwner(dialogStage1);
+        alert.setTitle("Помилка");
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
     }
 }

@@ -1,10 +1,9 @@
 package com.salesDep.controllers;
 
-import com.salesDep.FileManager;
-import com.salesDep.InputValidator;
 import com.salesDep.MainApp;
 import com.salesDep.model.Contract;
 import com.salesDep.model.Product;
+import com.salesDep.services.ContractService;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -48,6 +47,7 @@ public class ContractCreatorController extends MainApp {
     private boolean okClicked = false;
     private TableView<Contract> tableContract;
     private MainApp mainApp;
+    private ContractService contractService = new ContractService();
 
 
     @FXML
@@ -67,12 +67,9 @@ public class ContractCreatorController extends MainApp {
 
     public void setContract(Contract contract) {
         this.contract = contract;
-        ObservableList<Product> products = FXCollections.observableArrayList();
-
-        FileManager.loadProductsFromFile(contract.getContractID().get(), products);
-
         fieldContractID.setText(contract.getContractID().get());
         fieldContractTerm.setText(Integer.toString(contract.getTerm().get()));
+        ObservableList<Product> products = contractService.loadProductsForContract(contract.getContractID().get());
         tableProducts.setItems(products);
     }
 
@@ -134,25 +131,21 @@ public class ContractCreatorController extends MainApp {
     }
 
     private boolean isInputValid() {
-        String errorMessage = "";
-
-        errorMessage += InputValidator.validateNotEmpty(fieldContractID.getText(), "ID контракту");
-        errorMessage += InputValidator.validatePositiveInteger(fieldContractTerm.getText(), "Термін контракту");
-
-        if (errorMessage.isEmpty()) {
-            return true;
-        } else {
-            // Виведення повідомлення про помилку
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.initOwner(dialogStage);  // dialogStage використовується для роботи з діалоговим вікном
-            alert.setTitle("Некоректні поля");
-            alert.setHeaderText("Будь ласка, виправте помилки у введених даних.");
-            alert.setContentText(errorMessage);
-
-            alert.showAndWait();
-
+        String termText = fieldContractTerm.getText();
+        if (!contractService.validateContractTerm(termText)) {
+            showError("Некоректний термін контракту");
             return false;
         }
+        return true;
+    }
+
+    private void showError(String message) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.initOwner(dialogStage);
+        alert.setTitle("Помилка");
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
     }
 
 }
