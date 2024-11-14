@@ -1,7 +1,7 @@
 package com.salesDep.controllers;
 
-import com.salesDep.InputValidator;
 import com.salesDep.model.SalesEngineer;
+import com.salesDep.services.SalesEngineerService;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
@@ -9,29 +9,16 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
 public class SalesEngineerCreatorController {
-    public TextField fieldExp;
-
-    public Button buttonOk;
-    public Button buttonCancel;
-    @FXML
-    private TextField fieldFullName;
 
     @FXML
-    private TextField fieldNameOfCompany;
-
+    private TextField fieldExp, fieldFullName, fieldNameOfCompany, fieldPhoneNum, fieldAddress;
     @FXML
-    private TextField fieldPhoneNum;
-
-    @FXML
-    private TextField fieldAddress;
+    private Button buttonOk, buttonCancel;
 
     private Stage dialogStage;
     private SalesEngineer salesEngineer;
     private boolean okClicked = false;
-
-    @FXML
-    private void initialize() {
-    }
+    private final SalesEngineerService service = new SalesEngineerService();
 
     public void setDialogStage(Stage dialogStage) {
         this.dialogStage = dialogStage;
@@ -52,16 +39,26 @@ public class SalesEngineerCreatorController {
 
     @FXML
     private void handleOk() {
-        if (isInputValid()) {
-            if (salesEngineer != null) {
-                salesEngineer.getFullName().set(fieldFullName.getText());
-                salesEngineer.getNameOfCompany().set(fieldNameOfCompany.getText());
-                salesEngineer.getAddress().set(fieldAddress.getText());
-                salesEngineer.getPhoneNum().set(fieldPhoneNum.getText());
-                salesEngineer.getExperience().set(Integer.parseInt(fieldExp.getText()));
-                okClicked = true;
-                dialogStage.close();
-            }
+        String errorMessage = service.validateSalesEngineerData(
+                fieldFullName.getText(),
+                fieldNameOfCompany.getText(),
+                fieldPhoneNum.getText(),
+                fieldAddress.getText(),
+                fieldExp.getText()
+        );
+
+        if (errorMessage.isEmpty()) {
+            service.updateSalesEngineer(salesEngineer,
+                    fieldFullName.getText(),
+                    fieldNameOfCompany.getText(),
+                    fieldPhoneNum.getText(),
+                    fieldAddress.getText(),
+                    Integer.parseInt(fieldExp.getText())
+            );
+            okClicked = true;
+            dialogStage.close();
+        } else {
+            showErrorDialog(errorMessage);
         }
     }
 
@@ -70,30 +67,12 @@ public class SalesEngineerCreatorController {
         dialogStage.close();
     }
 
-    private boolean isInputValid() {
-        String errorMessage = "";
-
-        // Перевіряємо, чи поля не пусті
-        errorMessage += InputValidator.validateNotEmpty(fieldFullName.getText(), "Повне ім'я");
-        errorMessage += InputValidator.validateNotEmpty(fieldNameOfCompany.getText(), "Назва компанії");
-        errorMessage += InputValidator.validateNotEmpty(fieldPhoneNum.getText(), "Номер телефону");
-        errorMessage += InputValidator.validateNotEmpty(fieldAddress.getText(), "Адреса");
-        errorMessage += InputValidator.validateNotEmpty(fieldExp.getText(), "Стаж");
-
-        if (errorMessage.isEmpty()) {
-            return true;
-        } else {
-            // Показуємо повідомлення про помилку
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.initOwner(dialogStage);  // Використовуємо dialogStage, а не dialogStage1
-            alert.setTitle("Не коректні поля");
-            alert.setHeaderText("Будь ласка, введіть коректні поля.");
-            alert.setContentText(errorMessage);
-
-            alert.showAndWait();
-
-            return false;
-        }
+    private void showErrorDialog(String errorMessage) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.initOwner(dialogStage);
+        alert.setTitle("Некоректні поля");
+        alert.setHeaderText("Будь ласка, введіть коректні дані.");
+        alert.setContentText(errorMessage);
+        alert.showAndWait();
     }
-
 }
