@@ -31,4 +31,16 @@ public class InputValidator {
         }
         return "";
     }
+
+    public boolean validatePhoneNumber(String phoneNumber) {
+        return phoneNumber.matches("\\+380\\d{9}");
+    }
+
+    public boolean validateExperience(Object experience) {
+        if (experience instanceof Integer) {
+            int exp = (Integer) experience;
+            return exp >= 0 && exp <= 50;
+        }
+        return false;
+    }
 }
