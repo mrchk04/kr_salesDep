@@ -20,7 +20,7 @@ public class ProductCreatorController {
     private Product product;
     private boolean okClicked = false;
     private MainApp mainApp;
-    private ProductService productService = new ProductService();
+    public ProductService productService = new ProductService();
 
 
     @FXML
